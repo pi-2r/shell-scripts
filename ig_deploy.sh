@@ -19,7 +19,8 @@ function deploy_services(){
 
 	echo '-----------deploy $1-------------'
 	#delete old jar file
-	rm -rf  /u01/scadm/app/ig-admin.jar
+	rm -rf  /u01/scadm/app/$1.jar
+	echo 'Deleted $1.jar'
 
 	#copy new files
 	cp /u01/scadm/app/tmp_app/ig-parent/$1/target/$1.jar /u01/scadm/app/$1.jar
@@ -27,9 +28,9 @@ function deploy_services(){
 
 	echo '-----------start $1-------------'
 	#start new application
-	#java -jar /u01/scadm/app/$1.jar >> $1.log &
-	nohup java -jar -Xms128m -Xmx1024m -XX:MaxPermSize=1024m $1.jar &
-	echo "Application started."
+	java -jar -Xms128m -Xmx1024m -XX:MaxPermSize=1024m /u01/scadm/app/$1.jar >> $1.log &
+	#nohup java -jar -Xms128m -Xmx1024m -XX:MaxPermSize=1024m $1.jar &
+	echo 'Application $1 started.'
 }
 
 if [ $1 = 'ig-admin' ] || [ $1 = 'ig-rs' ] || [ $1 = 'all' ]; then
